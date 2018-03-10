@@ -1,5 +1,5 @@
 <template>
-  <canvas class="canvas" ref="canvas"></canvas>
+  <canvas class="canvas" ref="canvas" v-bind:style="{ 'background-position': offset.x +'px ' + offset.y + 'px'}"></canvas>
 </template>
 
 <script>
@@ -258,5 +258,7 @@ function drawNewLink () {
 .canvas {
   width: 100vw;
   display: block;
+  background-image: url('./../../assets/grid.svg');
+  background-size: 200px 200px;
 }
 </style>

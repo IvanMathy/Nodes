@@ -22,7 +22,7 @@ export default {
         {name: 'Add', description: 'Returns a + b.', template: { type: 'add', inputs: [{ id: 0, name: 'A' }, { id: 1, name: 'B' }], outputs: [{ id: 0, name: 'Output' }, { id: 1, name: 'Test' }], title: 'Add' }},
         {name: 'Subtract', description: 'Returns a − b.', template: { type: 'subtract', inputs: [{ id: 0, name: 'A' }, { id: 1, name: 'B' }], outputs: [{ id: 0, name: 'Output' }], title: 'Subtract' }},
         {name: 'Multiply', description: 'Returns a × b.', template: { type: 'multiply', inputs: [{ id: 0, name: 'A' }, { id: 1, name: 'B' }], outputs: [{ id: 0, name: 'Output' }], title: 'Input' }},
-        {name: 'Divide', description: 'Returns a ÷ b.', template: { type: 'divide', inputs: [{ id: 0, name: 'A' }, { id: 1, name: 'B' }], outputs: [{ id: 0, name: 'Output' }], title: 'Input' }}]
+        {name: 'Divide', description: 'Returns a ÷ b.', template: { type: 'divide', inputs: [{ id: 0, name: 'A' }, { id: 1, name: 'B' }], outputs: [{ id: 0, name: 'Output' }], title: 'Divide' }}]
 
     }
   },

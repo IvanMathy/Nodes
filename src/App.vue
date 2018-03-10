@@ -19,7 +19,7 @@ export default {
 html {
   box-sizing: border-box;
   font-size: 16px;
-  background-color: #484a4c;
+  background-color: #262728;
 }
 
 body, html {
