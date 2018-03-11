@@ -17,23 +17,26 @@ export default {
   name: 'NodePicker',
   data () {
     return {
-      types: [{name: 'Display', description: 'Prints out any number you feed in.', template: { type: 'display', inputs: [{ id: 0, name: 'Input' }], title: 'Display' }},
+      types: [{name: 'Display', description: 'Prints out any number you feed in.', template: { type: 'display', inputs: [{ id: 0, name: 'In' }], title: 'Display' }},
         {name: 'Input', description: 'Lets you enter a number.', template: { type: 'input', outputs: [{ id: 0, name: 'Out' }], title: 'Input', value: 1 }},
-        {name: 'Add', description: 'Returns a + b.', template: { type: 'add', inputs: [{ id: 0, name: 'A' }, { id: 1, name: 'B' }], outputs: [{ id: 0, name: 'Output' }, { id: 1, name: 'Test' }], title: 'Add' }},
-        {name: 'Subtract', description: 'Returns a − b.', template: { type: 'subtract', inputs: [{ id: 0, name: 'A' }, { id: 1, name: 'B' }], outputs: [{ id: 0, name: 'Output' }], title: 'Subtract' }},
-        {name: 'Multiply', description: 'Returns a × b.', template: { type: 'multiply', inputs: [{ id: 0, name: 'A' }, { id: 1, name: 'B' }], outputs: [{ id: 0, name: 'Output' }], title: 'Input' }},
-        {name: 'Divide', description: 'Returns a ÷ b.', template: { type: 'divide', inputs: [{ id: 0, name: 'A' }, { id: 1, name: 'B' }], outputs: [{ id: 0, name: 'Output' }], title: 'Divide' }}]
+        {name: 'Slider', description: 'A 0-1 interactive slider.', template: { type: 'slider', inputs: [], outputs: [{ id: 0, name: 'Out' }], title: 'Slider', value: 0.5 }},
+        {name: 'Add', description: 'Returns a + b.', template: { type: 'add', inputs: [{ id: 0, name: 'A' }, { id: 1, name: 'B' }], outputs: [{ id: 0, name: 'Out' }], title: 'Add', symbol: '+'}},
+        {name: 'Subtract', description: 'Returns a − b.', template: { type: 'subtract', inputs: [{ id: 0, name: 'A' }, { id: 1, name: 'B' }], outputs: [{ id: 0, name: 'Out' }], title: 'Subtract', symbol: '-' }},
+        {name: 'Multiply', description: 'Returns a × b.', template: { type: 'multiply', inputs: [{ id: 0, name: 'A' }, { id: 1, name: 'B' }], outputs: [{ id: 0, name: 'Out' }], title: 'Multiply', symbol: '×' }},
+        {name: 'Divide', description: 'Returns a ÷ b.', template: { type: 'divide', inputs: [{ id: 0, name: 'A' }, { id: 1, name: 'B' }], outputs: [{ id: 0, name: 'Out' }], title: 'Divide', symbol: '÷' }},
+        {name: 'Power', description: 'Returns a ^ b.', template: { type: 'power', inputs: [{ id: 0, name: 'A' }, { id: 1, name: 'B' }], outputs: [{ id: 0, name: 'Out' }], title: 'Power', symbol: 'aⁿ' }},]
 
     }
   },
   methods: {
     addNode: function (e) {
       // We convert to JSON to unbind the template, else every new node will be linked.
+      // This is just a cheap and dirty way to do deep copy.
       let newNode = JSON.parse(JSON.stringify(this.types[e].template))
       newNode.position = {x: 100, y: 100}
       newNode.id = UUID()
-      this.$parent.nodes.push(newNode)
-      console.log(newNode)
+      newNode.compact = false
+      this.$store.commit('addNode', newNode)
       this.$parent.isPickerVisible = false
     }
   }

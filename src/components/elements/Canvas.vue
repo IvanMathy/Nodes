@@ -3,13 +3,13 @@
 </template>
 
 <script>
-var vm, canvas, context, initX, initY, mousePressX, mousePressY
+import { mapState } from 'vuex'
 
+var vm, canvas, context, initX, initY, mousePressX, mousePressY
 let headerSize = 40 // This could probably be better
 
 export default {
   name: 'Canvas',
-  props: ['nodes', 'offset', 'linkCreation'],
   mounted () {
     vm = this
     canvas = this.$refs.canvas
@@ -42,6 +42,11 @@ export default {
     // and redraw everything once it had time to think a little.
     setTimeout(onResize, 30)
   },
+  computed: mapState([
+    'nodes',
+    'offset',
+    'linkCreation'
+  ]),
   watch: {
     nodes: {
       handler (val) {
@@ -166,7 +171,7 @@ function drawNewLink () {
     return map
   }, {})
 
-  if (vm.$parent.linkCreation.creating) {
+  if (vm.linkCreation.creating) {
     let link = vm.linkCreation
     let originNode = nodes[link.origin.node]
 
@@ -214,6 +219,7 @@ function drawNewLink () {
       }
       context.closePath()
     } else {
+
       context.moveTo(link.position.x * 2, link.position.y * 2 - headerSize)
       context.bezierCurveTo(link.position.x * 2 - 10, link.position.y * 2 - headerSize,
         (originNode.position.x + output._offset.x + vm.offset.x + portOffset) * 2 + 100,

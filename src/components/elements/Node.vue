@@ -1,10 +1,10 @@
 <template>
-  <div class="node" tabindex="0">
-    <h3 class="title">{{node.title}}</h3>
+  <div class="node" tabindex="0" @dblclick="toggleCompact">
+    <h3 class="title" v-if="!compact">{{node.title}}</h3>
     <div class="delete" @click.prevent="deleteNode"></div>
 
     <div class="input" v-if="node.type === 'input'">
-      <input :value="node.value">
+      <input v-model="node.value">
     </div>
 
     <div class="inputs">
@@ -12,48 +12,50 @@
         <i class="port" :ref="'nodeInput'+input.id" :index="index"
           type="input" @contextmenu.prevent="portContextMenu"
           @mouseover="portMouseOver(index, 'nodeInput'+input.id)"/>
-        {{ input.name }}
+        <template  v-if="!compact">{{ input.name }}</template>
       </p>
+
+      <div v-if="node.type === 'slider'">
+        <input  class="slider"  type="range" v-model="node.value" step="0.01" min="0" max="1" @mousedown.stop>
+      </div>
+    </div>
+
+    <div class="compactName"  v-if="compact">
+      {{ node.symbol }}
     </div>
 
     <div class="outputs">
       <p v-for="(output, index) in node.outputs" :key="index" :index="index">
-        {{ output.name }}
+        <template v-if="!compact">
+          <template v-if="node.type === 'slider'">{{ sliderValue }}</template>
+          <template v-else>{{ output.name }}</template>
+        </template>
         <i class="port" :ref="'nodeOutput'+output.id" type="output"
         @mousedown.prevent="portMouseDown($event, index)"/>
       </p>
     </div>
     <div class="display" v-if="node.type === 'display'">
-      200
+      {{ outputValue }}
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
+import Calculator from '../../calculator'
+
 var initX, initY, mousePressX, mousePressY
 
 export default {
   name: 'Node',
-  props: ['node', 'offset', 'delete'],
+  props: ['node'],
   mounted () {
     var vm = this
     this.$el.addEventListener('mousedown', onMouseDown)
     vm.$el.style.left = this.node.position.x + this.offset.x + 'px'
     vm.$el.style.top = this.node.position.y + this.offset.y + 'px'
 
-    for (var ref in this.$refs) {
-      var obj = this.$refs[ref][0]
-      let index = obj.parentNode.getAttribute('index')
-      if (obj.getAttribute('type') === 'input') {
-        this.node.inputs[index]._offset =
-          { x: obj.parentElement.parentElement.offsetLeft,
-            y: obj.parentElement.parentElement.offsetTop + obj.parentElement.offsetTop}
-      } else if (obj.getAttribute('type') === 'output') {
-        this.node.outputs[index]._offset =
-          { x: obj.parentElement.parentElement.offsetLeft + obj.offsetLeft,
-            y: obj.parentElement.parentElement.offsetTop + obj.parentElement.offsetTop}
-      }
-    }
+    this.updateOffsets()
 
     function onMouseDown (event) {
       initX = vm.node.position.x
@@ -75,6 +77,24 @@ export default {
       vm.$el.style.top = vm.node.position.y + vm.offset.y + 'px'
     }
   },
+  data: function () {
+    return {
+      compact: this.node.compact
+    }
+  },
+  computed: {
+    sliderValue () {
+      return parseFloat(this.node.value).toFixed(2)
+    },
+    outputValue () {
+      // Output is limited to 2 decimal places to make things a bit nicer.
+      return parseFloat(Calculator(this.node, this.$store.state.nodes)).toFixed(2);
+    },
+    ...mapState([
+      'nodes',
+      'offset'
+    ])
+  },
   watch: {
     offset: {
       handler (e) {
@@ -85,6 +105,29 @@ export default {
     }
   },
   methods: {
+    toggleCompact () {
+      this.compact = !this.compact
+      this.$nextTick(() => {
+        this.updateOffsets()
+        this.$set(this.node, 'compact', this.compact)
+      })
+    },
+    updateOffsets () {
+      for (var ref in this.$refs) {
+        var obj = this.$refs[ref][0]
+        let index = obj.parentNode.getAttribute('index')
+        if (obj.getAttribute('type') === 'input') {
+          this.$set(this.node.inputs[index], '_offset',
+          { x: obj.parentElement.parentElement.offsetLeft,
+              y: obj.parentElement.parentElement.offsetTop + obj.parentElement.offsetTop})
+        } else if (obj.getAttribute('type') === 'output') {
+          this.$set(this.node.outputs[index], '_offset',
+          { x: obj.parentElement.parentElement.offsetLeft,
+              y: obj.parentElement.parentElement.offsetTop + obj.parentElement.offsetTop})
+        }
+
+      }
+    },
     portContextMenu: function (e) {
       this.$delete(this.node.inputs[e.target.getAttribute('index')], 'link')
     },
@@ -92,30 +135,30 @@ export default {
       e.stopPropagation()
       var vm = this
 
-      vm.$parent.linkCreation.creating = true
-      vm.$parent.linkCreation.origin.node = vm.node.id
-      vm.$parent.linkCreation.origin.output = index
+      vm.$store.state.linkCreation.creating = true
+      vm.$store.state.linkCreation.origin.node = vm.node.id
+      vm.$store.state.linkCreation.origin.output = index
 
-      vm.$parent.linkCreation.position.x = e.clientX
-      vm.$parent.linkCreation.position.y = e.clientY
+      vm.$store.state.linkCreation.position.x = e.clientX
+      vm.$store.state.linkCreation.position.y = e.clientY
 
       var onMouseMove = function (e) {
-        vm.$parent.linkCreation.position.x = e.clientX
-        vm.$parent.linkCreation.position.y = e.clientY
+        vm.$store.state.linkCreation.position.x = e.clientX
+        vm.$store.state.linkCreation.position.y = e.clientY
       }
 
       window.addEventListener('mousemove', onMouseMove, false)
 
       window.addEventListener('mouseup', function (e) {
         e.stopPropagation()
-        vm.$parent.linkCreation.creating = false
+        vm.$store.state.linkCreation.creating = false
         window.removeEventListener('mousemove', onMouseMove)
         window.removeEventListener('mouseup', onMouseMove)
 
-        var link = vm.$parent.linkCreation
+        var link = vm.$store.state.linkCreation
 
         if (link.hasDestination && link.destination.node !== link.origin.node && link.valid) {
-          let node = vm.$parent.nodes.find(function (e) {
+          let node = vm.$store.state.nodes.find(function (e) {
             return e.id === link.destination.node
           })
           let input = node.inputs[link.destination.input]
@@ -127,18 +170,18 @@ export default {
     },
     portMouseOver: function (index, ref) {
       var vm = this
-      if (vm.$parent.linkCreation.creating) {
-        vm.$parent.linkCreation.hasDestination = true
-        vm.$parent.linkCreation.destination.node = vm.node.id
-        vm.$parent.linkCreation.destination.input = index
+      if (vm.$store.state.linkCreation.creating) {
+        vm.$store.state.linkCreation.hasDestination = true
+        vm.$store.state.linkCreation.destination.node = vm.node.id
+        vm.$store.state.linkCreation.destination.input = index
 
         vm.$refs[ref][0].addEventListener('mouseout', function (e) {
-          vm.$parent.linkCreation.hasDestination = false
+          vm.$store.state.linkCreation.hasDestination = false
         }, { once: true })
       }
     },
     deleteNode: function () {
-      this.delete(this.node.id)
+      this.$store.commit('deleteNode', this.node.id)
     }
   }
 }
@@ -276,5 +319,53 @@ h3.title {
   margin: 5px;
   text-align: right;
   min-width: 50px;
+}
+
+.slider {
+    -webkit-appearance: none;
+    width: 70px;
+    height: 5px;
+    border-radius: 5px;
+    background: #777;
+    outline: none;
+    opacity: 0.7;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    border: none;
+    margin-left:15px;
+    margin-right: -5px;
+    margin-bottom: 1px;
+    padding: 0;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background: #BBB;
+    cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background: #BBB;
+  cursor: pointer;
+  border: none;
+}
+input[type=range]::-moz-range-track {
+  background-color: transparent;
+}
+input[type=range]::-moz-focus-outer {
+  border: 0;
+}
+.compactName {
+  display: inline-block;
+  color: #CCC;
+  position: relative;
+  top: -4px;
 }
 </style>
