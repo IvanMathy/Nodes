@@ -135,11 +135,15 @@ function drawLines () {
 
           context.beginPath()
 
+          var distance = (otherNode.position.x + output._offset.x + vm.offset.x + portOffset) -
+                         (node.position.x + input._offset.x + vm.offset.x + portOffset)
+          var tension = Math.min(Math.abs(distance), 100)
+
           context.moveTo((node.position.x + input._offset.x + vm.offset.x + portOffset) * 2,
             (node.position.y + input._offset.y + vm.offset.y + portOffset) * 2)
-          context.bezierCurveTo((node.position.x + input._offset.x + vm.offset.x + portOffset) * 2 - 100,
+          context.bezierCurveTo((node.position.x + input._offset.x + vm.offset.x + portOffset) * 2 - tension,
             (node.position.y + input._offset.y + vm.offset.y + portOffset) * 2,
-            (otherNode.position.x + output._offset.x + vm.offset.x + portOffset) * 2 + 100,
+            (otherNode.position.x + output._offset.x + vm.offset.x + portOffset) * 2 + tension,
             (otherNode.position.y + output._offset.y + vm.offset.y + portOffset) * 2,
             (otherNode.position.x + output._offset.x + vm.offset.x + portOffset) * 2,
             (otherNode.position.y + output._offset.y + vm.offset.y + portOffset) * 2)

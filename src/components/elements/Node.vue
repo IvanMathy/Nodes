@@ -119,11 +119,11 @@ export default {
         if (obj.getAttribute('type') === 'input') {
           this.$set(this.node.inputs[index], '_offset',
           { x: obj.parentElement.parentElement.offsetLeft,
-              y: obj.parentElement.parentElement.offsetTop + obj.parentElement.offsetTop})
+            y: obj.parentElement.parentElement.offsetTop + obj.parentElement.offsetTop })
         } else if (obj.getAttribute('type') === 'output') {
           this.$set(this.node.outputs[index], '_offset',
-          { x: obj.parentElement.parentElement.offsetLeft,
-              y: obj.parentElement.parentElement.offsetTop + obj.parentElement.offsetTop})
+          { x: obj.parentElement.parentElement.offsetLeft + obj.offsetLeft,
+            y: obj.parentElement.parentElement.offsetTop + obj.parentElement.offsetTop })
         }
 
       }
@@ -252,6 +252,8 @@ h3.title {
   color: white;
   font-size: 14px;
   margin-top: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .inputs {
@@ -315,8 +317,8 @@ h3.title {
   right: 5px;
   white-space:nowrap;
   color: white;
-  font-size: 25px;
-  margin: 5px;
+  font-size: 24px;
+  margin-right: 5px;
   text-align: right;
   min-width: 50px;
 }
