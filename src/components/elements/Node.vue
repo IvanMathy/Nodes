@@ -196,6 +196,7 @@ export default {
   border-radius: 4px;
   position: absolute;
   outline: none;
+  min-width: 40px;
 
   -webkit-box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.3), inset 0px 1px 0px 0px rgba(209,209,209,.1);
   -moz-box-shadow: 0px 1px 1px 0px rgba(0,0,0,0.3), inset 0px 1px 0px 0px rgba(209,209,209,.1);
@@ -268,7 +269,7 @@ h3.title {
   bottom: 0;
 }
 .compact > .inputs {
-  top: 10px;
+  top : 4px;
 }
 .outputs {
   position: absolute;
@@ -383,6 +384,7 @@ input[type=range]::-moz-focus-outer {
   display: inline-block;
   color: #CCC;
   position: relative;
-  top: -4px;
+  top: 5px;
+  left: -4px;
 }
 </style>
