@@ -77,7 +77,7 @@ function draw () {
   drawLines()
   drawNewLink()
 }
-
+/*
 function drawBackground () {
   var width = canvas.width
   var height = canvas.height
@@ -94,7 +94,7 @@ function drawBackground () {
   context.fill()
   context.closePath()
 }
-
+*/
 function drawLines () {
   // Seems like Webkit and Firefox do not render lines from the same origin.
   var isWebkit = 'WebkitAppearance' in document.documentElement.style
@@ -137,7 +137,7 @@ function drawLines () {
 
           var distance = (otherNode.position.x + output._offset.x + vm.offset.x + portOffset) -
                          (node.position.x + input._offset.x + vm.offset.x + portOffset)
-          var tension = Math.min(Math.abs(distance), 100)
+          var tension = Math.min(Math.abs(distance), 80) + 20
 
           context.moveTo((node.position.x + input._offset.x + vm.offset.x + portOffset) * 2,
             (node.position.y + input._offset.y + vm.offset.y + portOffset) * 2)
@@ -203,7 +203,6 @@ function drawNewLink () {
         (originNode.position.x + output._offset.x + vm.offset.x + portOffset) * 2,
         (originNode.position.y + output._offset.y + vm.offset.y + portOffset) * 2)
 
-
       if (link.valid) {
         context.lineWidth = 9
         context.strokeStyle = '#118e15'
@@ -223,7 +222,6 @@ function drawNewLink () {
       }
       context.closePath()
     } else {
-
       context.moveTo(link.position.x * 2, link.position.y * 2 - headerSize)
       context.bezierCurveTo(link.position.x * 2 - 10, link.position.y * 2 - headerSize,
         (originNode.position.x + output._offset.x + vm.offset.x + portOffset) * 2 + 100,
@@ -246,9 +244,8 @@ function drawNewLink () {
   // feels like less work. Don't judge me I write good code for a living this is
   // my escape and I only have 5 minutes before my canelés are finally cooked.
 
-  function checkNode(originNode, destinationNode) {
+  function checkNode (originNode, destinationNode) {
     if (originNode === destinationNode) return false
-
 
     for (let index in nodes[originNode].inputs) {
       let input = nodes[originNode].inputs[index]

@@ -3,7 +3,6 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
-
 export default new Vuex.Store({
   state: {
     nodes: [],
@@ -21,7 +20,7 @@ export default new Vuex.Store({
   mutations: {
     deleteNode (state, id) {
       let index = state.nodes.findIndex(item => item.id === id)
-      state.nodes.splice(index, 1);
+      state.nodes.splice(index, 1)
     },
     addNode (state, node) {
       state.nodes.push(node)

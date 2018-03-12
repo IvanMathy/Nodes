@@ -20,11 +20,11 @@ export default {
       types: [{name: 'Display', description: 'Prints out any number you feed in.', template: { type: 'display', inputs: [{ id: 0, name: 'In' }], title: 'Display' }},
         {name: 'Input', description: 'Lets you enter a number.', template: { type: 'input', outputs: [{ id: 0, name: 'Out' }], title: 'Input', value: 1 }},
         {name: 'Slider', description: 'A 0-1 interactive slider.', template: { type: 'slider', inputs: [], outputs: [{ id: 0, name: 'Out' }], title: 'Slider', value: 0.5 }},
-        {name: 'Add', description: 'Returns a + b.', template: { type: 'add', inputs: [{ id: 0, name: 'A' }, { id: 1, name: 'B' }], outputs: [{ id: 0, name: 'Out' }], title: 'Add', symbol: '+'}},
+        {name: 'Add', description: 'Returns a + b.', template: { type: 'add', inputs: [{ id: 0, name: 'A' }, { id: 1, name: 'B' }], outputs: [{ id: 0, name: 'Out' }], title: 'Add', symbol: '+' }},
         {name: 'Subtract', description: 'Returns a − b.', template: { type: 'subtract', inputs: [{ id: 0, name: 'A' }, { id: 1, name: 'B' }], outputs: [{ id: 0, name: 'Out' }], title: 'Subtract', symbol: '-' }},
         {name: 'Multiply', description: 'Returns a × b.', template: { type: 'multiply', inputs: [{ id: 0, name: 'A' }, { id: 1, name: 'B' }], outputs: [{ id: 0, name: 'Out' }], title: 'Multiply', symbol: '×' }},
         {name: 'Divide', description: 'Returns a ÷ b.', template: { type: 'divide', inputs: [{ id: 0, name: 'A' }, { id: 1, name: 'B' }], outputs: [{ id: 0, name: 'Out' }], title: 'Divide', symbol: '÷' }},
-        {name: 'Power', description: 'Returns a ^ b.', template: { type: 'power', inputs: [{ id: 0, name: 'A' }, { id: 1, name: 'B' }], outputs: [{ id: 0, name: 'Out' }], title: 'Power', symbol: 'aⁿ' }},]
+        {name: 'Power', description: 'Returns a ^ b.', template: { type: 'power', inputs: [{ id: 0, name: 'A' }, { id: 1, name: 'B' }], outputs: [{ id: 0, name: 'Out' }], title: 'Power', symbol: 'aⁿ' }}]
 
     }
   },
@@ -66,7 +66,7 @@ function UUID () {
 
 .nodePicker .window {
   background-color: #303133;
-  width: 600px;
+  width: 615px;
   height: 300px;
   border-radius: 10px;
   color: white;
@@ -79,7 +79,7 @@ function UUID () {
 }
 
 .nodePicker .nodes {
-  overflow-x: scroll;
+  overflow-x: hidden;
   margin-top: 10px;
   height: 200px;
 }

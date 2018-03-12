@@ -1,6 +1,6 @@
 <template>
-  <div class="node" tabindex="0" @dblclick="toggleCompact">
-    <h3 class="title" v-if="!compact">{{node.title}}</h3>
+  <div class="node" :class="[{ compact: compact }]" tabindex="0" @dblclick="toggleCompact">
+    <h3 class="title" v-if="!compact">&nbsp;&nbsp;{{node.title}}&nbsp;&nbsp;</h3>
     <div class="delete" @click.prevent="deleteNode"></div>
 
     <div class="input" v-if="node.type === 'input'">
@@ -14,10 +14,10 @@
           @mouseover="portMouseOver(index, 'nodeInput'+input.id)"/>
         <template  v-if="!compact">{{ input.name }}</template>
       </p>
+    </div>
 
-      <div v-if="node.type === 'slider'">
-        <input  class="slider"  type="range" v-model="node.value" step="0.01" min="0" max="1" @mousedown.stop>
-      </div>
+    <div v-if="node.type === 'slider'" class="sliderContainer">
+      <input  class="slider"  type="range" v-model="node.value" step="0.01" min="0" max="1" @mousedown.stop>
     </div>
 
     <div class="compactName"  v-if="compact">
@@ -88,7 +88,7 @@ export default {
     },
     outputValue () {
       // Output is limited to 2 decimal places to make things a bit nicer.
-      return parseFloat(Calculator(this.node, this.$store.state.nodes)).toFixed(2);
+      return parseFloat(Calculator(this.node, this.$store.state.nodes)).toFixed(2)
     },
     ...mapState([
       'nodes',
@@ -118,14 +118,13 @@ export default {
         let index = obj.parentNode.getAttribute('index')
         if (obj.getAttribute('type') === 'input') {
           this.$set(this.node.inputs[index], '_offset',
-          { x: obj.parentElement.parentElement.offsetLeft,
-            y: obj.parentElement.parentElement.offsetTop + obj.parentElement.offsetTop })
+            { x: obj.parentElement.parentElement.offsetLeft,
+              y: obj.parentElement.parentElement.offsetTop + obj.parentElement.offsetTop })
         } else if (obj.getAttribute('type') === 'output') {
           this.$set(this.node.outputs[index], '_offset',
-          { x: obj.parentElement.parentElement.offsetLeft + obj.offsetLeft,
-            y: obj.parentElement.parentElement.offsetTop + obj.parentElement.offsetTop })
+            { x: obj.parentElement.parentElement.offsetLeft + obj.offsetLeft,
+              y: obj.parentElement.parentElement.offsetTop + obj.parentElement.offsetTop })
         }
-
       }
     },
     portContextMenu: function (e) {
@@ -188,7 +187,6 @@ export default {
 
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 
 .node {
@@ -248,12 +246,14 @@ export default {
   display: block;
 }
 
+.compact:hover > .delete {
+  display: none;
+}
+
 h3.title {
   color: white;
   font-size: 14px;
   margin-top: 5px;
-  margin-left: 10px;
-  margin-right: 10px;
 }
 
 .inputs {
@@ -264,15 +264,21 @@ h3.title {
   font-size: 10px;
   white-space:nowrap;
   margin-bottom: 5px;
+  float: left;
+  bottom: 0;
+}
+.compact > .inputs {
+  top: 10px;
 }
 .outputs {
-  position: relative;
+  position: absolute;
   display: inline-block;
   right: -6px;
   white-space:nowrap;
   color: white;
   font-size: 10px;
   margin-bottom: 5px;
+  bottom: 0px;
   text-align: right;
 }
 .port{
@@ -294,11 +300,16 @@ h3.title {
   position: relative;
   display: inline-block;
   left: 5px;
+  top: -5px;
   color: white;
   font-size: 10px;
   white-space:nowrap;
-  margin-bottom: 5px;
+  margin-bottom: 0px;
   margin-top: 10px;
+  margin-right: 35px;
+}
+.compact > .input {
+  margin-right: 5px;
 }
 .input input {
   width: 40px;
@@ -314,15 +325,15 @@ h3.title {
 .display {
   position: relative;
   display: inline-block;
-  right: 5px;
+  right: 20px;
   white-space:nowrap;
   color: white;
   font-size: 24px;
   margin-right: 5px;
   text-align: right;
   min-width: 50px;
+  margin-left: 20px;
 }
-
 .slider {
     -webkit-appearance: none;
     width: 70px;
@@ -334,12 +345,16 @@ h3.title {
     -webkit-transition: .2s;
     transition: opacity .2s;
     border: none;
-    margin-left:15px;
-    margin-right: -5px;
-    margin-bottom: 1px;
+    margin-right: 30px;
+    margin-bottom: 4px;
     padding: 0;
 }
-
+.compact .slider {
+  margin-right: 10px;
+  float: left;
+  margin-top: 9px;
+  margin-bottom: 9px;
+}
 .slider::-webkit-slider-thumb {
     -webkit-appearance: none;
     appearance: none;
