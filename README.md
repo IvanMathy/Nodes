@@ -2,7 +2,7 @@
 ![Logo](/images/logo.svg?raw=true)
 </p>
 
-Nodes is a poorly coded yet fully functional Vue.js node graph editor. It features multiple data types, retina support, and (probably) endless canvas, a compact mode, a working calculator sample with 8 node types, an outdated design and unintuitive controls.
+Nodes is a poorly coded yet fully functional Vue.js node graph editor. It features multiple data types, retina support, a (probably) endless canvas, a compact mode, a working calculator sample with 8 node types, an outdated design and unintuitive controls.
 
 <p align="center">
 ![Example](/images/compact1.png?raw=true)
