@@ -1,15 +1,13 @@
 <p align="center">
-![Logo](/images/logo.svg?raw=true)
+  <img src="https://nodes.okat.best/img/logo.svg">
 </p>
 
-Nodes is a poorly coded yet fully functional Vue.js node graph editor. It features multiple data types, retina support, a (probably) endless canvas, a compact mode, a working calculator sample with 8 node types, an outdated design and unintuitive controls.
+Nodes is a poorly coded yet fully functional Vue.js node graph editor. It features multiple data types, retina support, a (probably) endless canvas, a compact mode, a working calculator sample with 8 node types, an outdated design and unintuitive controls.[**Try it online!**](https://nodes.okat.best/)
 
 <p align="center">
-  ![Example](/images/compact1.png?raw=true)
-
-
-  [**Try it online!**](https://nodes.okat.best/)
+  <img src="https://nodes.okat.best/img/compact1.png">
 </p>
+
 
 ## How to use
 
@@ -17,7 +15,7 @@ Hit `Space` to open the node picker. Click and drag a node to move it, or the ba
 
 ## Setup
 
-Since it is not a library this project is not available on any package manager. This is simply an experiment, and you should not be using any of it in a production project. If you'd like to try it out, you can go to the version I host, or run your own by cloning/downloading the content of this repository and running `npm run dev` like any other Vue project.
+Since it is not a library this project is not available on any package manager. This is simply an experiment, and you should not be using any of it in a production project. If you'd like to try it out, you can go to [the version I host](https://nodes.okat.best/), or run your own by cloning/downloading the content of this repository and running `npm run dev` like any other Vue project.
 
 ## How it works
 
