@@ -38,11 +38,11 @@ export default {
 .help .window {
   background-color: #303133;
   width: 615px;
-  height: 300px;
   border-radius: 10px;
   color: white;
   position: absolute;
   padding-top: 10px;
+  padding-bottom: 10px;
   top: 50%;
   left: 50%;
 
